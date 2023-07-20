@@ -1,0 +1,33 @@
+{
+  "name": "ts-enjoy-hint",
+  "version": "1.0.0",
+  "description": "Typescript enjoy hint",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ryinner/ts-enjoy-hint.git"
+  },
+  "keywords": [
+    "typescript",
+    "enjoyhint",
+    "hint"
+  ],
+  "author": "ryinner",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ryinner/ts-enjoy-hint/issues"
+  },
+  "homepage": "https://github.com/ryinner/ts-enjoy-hint#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "eslint": "^8.45.0",
+    "eslint-config-standard-with-typescript": "^36.1.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^16.0.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "typescript": "^5.1.6"
+  }
+}
