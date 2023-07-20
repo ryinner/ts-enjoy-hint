@@ -9,7 +9,9 @@
         "typeRoots": ["node_modules/@types"],
         "paths": {
             "@/*": ["./src/*"]
-        }
+        },
+        "outDir": "dist",
+        "rootDir": "src",
     },
-    "exclude": ["node_modules"]
+    "exclude": ["node_modules", "dist"]
 }

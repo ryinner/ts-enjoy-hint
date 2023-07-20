@@ -7,9 +7,13 @@
     "overrides": [
     ],
     "parserOptions": {
+        "parser": "@typescript-eslint/parser",
+        "project": "./tsconfig.json",
         "ecmaVersion": "latest",
         "sourceType": "module"
     },
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["@typescript-eslint"],
     "rules": {
         "@typescript-eslint/key-spacing": "warn",
         "@typescript-eslint/indent": ["error", 4, {"SwitchCase": 1}],
