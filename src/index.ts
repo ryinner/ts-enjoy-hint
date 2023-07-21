@@ -1,8 +1,9 @@
 import { canvasDrawer, createFullScreenCanvas } from './utils/canvas.utils';
+import { getElementFromTarget } from './utils/options.utils';
 
-type TsEnjoyHintTarget = string | HTMLElement;
+type TsEnjoyHintTarget = string | Element;
 
-type TsEnjoyHintCallback = (target: HTMLElement) => void;
+type TsEnjoyHintCallback = (target: Element) => void;
 
 type TsEnjoyHintShape = 'rectangle' | 'circle';
 
@@ -58,6 +59,10 @@ class TypescriptEnjoyHint {
         if (this.current === this.hints.length) {
             this.close();
         } else {
+            const target = this.getCurrent();
+            if (typeof target.onLeave === 'function') {
+                target.onLeave(getElementFromTarget(target.target));
+            }
             this.current++;
         }
     }
@@ -71,6 +76,9 @@ class TypescriptEnjoyHint {
     }
 
     render (target: TsEnjoyHintTargetOption): void {
+        if (typeof target.onEnter === 'function') {
+            target.onEnter(getElementFromTarget(target.target));
+        }
         canvasDrawer(this.canvas, target);
     }
 
