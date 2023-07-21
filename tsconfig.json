@@ -1,8 +1,8 @@
 {
     "compilerOptions": {
         "target": "ES6",
-        "removeComments": true,
         "moduleResolution": "node",
+        "removeComments": true,
         "esModuleInterop": true,
         "strict": true,
         "isolatedModules": true,

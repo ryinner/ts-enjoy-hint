@@ -4,7 +4,8 @@
   "description": "Typescript enjoy hint",
   "main": "index.js",
   "scripts": {
-    "dev": "tsc",
+    "dev": "tsc -b ./tsconfig.cjs.json",
+    "build": "tsc -b ./tsconfig.cjs.json ./tsconfig.esm.json ./tsconfig.types.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
