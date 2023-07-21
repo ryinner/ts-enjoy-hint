@@ -1,5 +1,5 @@
 import { canvasDrawer, createFullScreenCanvas } from './utils/canvas.utils';
-import { getElementFromTarget } from './utils/options.utils';
+import { createNonClickableStroke, getElementFromTarget, resizeNonClickableStrokeToTarget, type TsEnjoyHintNonClickableStokes } from './utils/options.utils';
 
 type TsEnjoyHintTarget = string | Element;
 
@@ -22,6 +22,7 @@ class TypescriptEnjoyHint {
     private current: number = 0;
 
     private canvas!: HTMLCanvasElement;
+    private stroke!: TsEnjoyHintNonClickableStokes;
 
     private hints!: TsEnjoyHintTargetOption[];
 
@@ -45,9 +46,17 @@ class TypescriptEnjoyHint {
         this.setCurrentFirstIndex();
         if (this.canvas === undefined) {
             this.canvas = createFullScreenCanvas();
+            document.body.appendChild(this.canvas);
         }
-        document.body.appendChild(this.canvas);
+        if (this.stroke === undefined) {
+            this.stroke = createNonClickableStroke();
+            document.body.appendChild(this.stroke.bottom);
+            document.body.appendChild(this.stroke.left);
+            document.body.appendChild(this.stroke.right);
+            document.body.appendChild(this.stroke.top);
+        }
         this.render(this.getCurrent());
+        document.body.style.overflow = 'hidden';
         window.addEventListener('resize', () => { this.canvasResize(); });
     }
 
@@ -80,12 +89,15 @@ class TypescriptEnjoyHint {
             target.onEnter(getElementFromTarget(target.target));
         }
         canvasDrawer(this.canvas, target);
+        resizeNonClickableStrokeToTarget(target.target, this.stroke);
     }
 
     canvasResize (): void {
+        const target = this.getCurrent();
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
-        this.render(this.getCurrent());
+        this.render(target);
+        resizeNonClickableStrokeToTarget(target.target, this.stroke);
     }
 }
 
