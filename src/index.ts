@@ -1,3 +1,5 @@
+import { canvasDrawer, createFullScreenCanvas } from './utils/canvas.utils';
+
 type TsEnjoyHintTarget = string | HTMLElement;
 
 type TsEnjoyHintCallback = (target: HTMLElement) => void;
@@ -17,6 +19,9 @@ type TsEnjoyHintOptions = TsEnjoyHintTarget | TsEnjoyHintTargetOption;
 
 class TypescriptEnjoyHint {
     private current: number = 0;
+
+    private canvas!: HTMLCanvasElement;
+
     private hints!: TsEnjoyHintTargetOption[];
 
     apply (options: TsEnjoyHintOptions | TsEnjoyHintOptions[]): void {
@@ -36,11 +41,17 @@ class TypescriptEnjoyHint {
     }
 
     open (): void {
-
+        this.setCurrentFirstIndex();
+        if (this.canvas === undefined) {
+            this.canvas = createFullScreenCanvas();
+        }
+        document.body.appendChild(this.canvas);
+        this.render(this.getCurrent());
+        window.addEventListener('resize', () => { this.canvasResize(); });
     }
 
     close (): void {
-
+        window.removeEventListener('resize', () => { this.canvasResize(); });
     }
 
     next (): void {
@@ -49,6 +60,24 @@ class TypescriptEnjoyHint {
         } else {
             this.current++;
         }
+    }
+
+    setCurrentFirstIndex (): void {
+        this.current = 0;
+    }
+
+    getCurrent (): TsEnjoyHintTargetOption {
+        return this.hints[this.current];
+    }
+
+    render (target: TsEnjoyHintTargetOption): void {
+        canvasDrawer(this.canvas, target);
+    }
+
+    canvasResize (): void {
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+        this.render(this.getCurrent());
     }
 }
 

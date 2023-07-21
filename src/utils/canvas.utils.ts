@@ -1,14 +1,15 @@
 import type { TsEnjoyHintShape, TsEnjoyHintTargetOption } from '@/index';
-import { getElementFromTarget } from '@/utils/options.utils';
+import { getElementFromTarget } from './options.utils';
+
+const DEFAULT_FILL_COLOR = '#00000066';
 
 export function canvasDrawer (canvas: HTMLCanvasElement, target: TsEnjoyHintTargetOption): void {
     const elementRect = getElementFromTarget(target.target).getBoundingClientRect();
     const canvasRect = canvas.getBoundingClientRect();
     const context = <CanvasRenderingContext2D> canvas.getContext('2d');
-    context.globalCompositeOperation = 'xor';
-
     drawHintByShape({ context, rect: canvasRect });
-    drawHintByShape({ context, rect: elementRect }, target.shape);
+    context.globalCompositeOperation = 'destination-out';
+    drawHintByShape({ context, rect: elementRect, color: '#fff' }, target.shape);
 }
 
 function drawHintByShape (drawArguments: TsEnjoyHintDrawFunctionArguments, shape?: TsEnjoyHintShape): void {
@@ -25,27 +26,34 @@ function drawHintByShape (drawArguments: TsEnjoyHintDrawFunctionArguments, shape
     func(drawArguments);
 }
 
-function drawRectangle ({ context, rect }: TsEnjoyHintDrawFunctionArguments): void {
-    const { top, left, width, height } = rect;
+function drawRectangle ({ context, rect, color }: TsEnjoyHintDrawFunctionArguments): void {
+    const { left, top, right, bottom } = rect;
 
-    context.fillRect(top, left, width, height);
+    context.fillStyle = color ?? DEFAULT_FILL_COLOR;
+    context.fillRect(left, top, right, bottom);
 }
 
-function drawCircle ({ context, rect }: TsEnjoyHintDrawFunctionArguments): void {
+function drawCircle ({ context, rect, color }: TsEnjoyHintDrawFunctionArguments): void {
     const { x, y, width, height } = rect;
 
+    const xCenter = x + width / 2;
+    const yCenter = y + height / 2;
     const radius = Math.sqrt(width ** 2 + height ** 2) / 2;
 
-    context.arc(x, y, radius, 0, 2 * Math.PI);
+    context.beginPath();
+    context.arc(xCenter, yCenter, radius, 0, 2 * Math.PI, false);
+    context.fillStyle = color ?? DEFAULT_FILL_COLOR;
+    context.fill();
 }
 
 export function createFullScreenCanvas (): HTMLCanvasElement {
     const canvas = document.createElement('canvas');
-    canvas.style.width = '100%';
-    canvas.style.height = '100%';
     canvas.style.position = 'absolute';
     canvas.style.top = '0';
     canvas.style.left = '0';
+    canvas.style.pointerEvents = 'none';
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
     return canvas;
 }
@@ -53,4 +61,5 @@ export function createFullScreenCanvas (): HTMLCanvasElement {
 interface TsEnjoyHintDrawFunctionArguments {
     context: CanvasRenderingContext2D;
     rect: DOMRect;
+    color?: string;
 };

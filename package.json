@@ -2,9 +2,9 @@
   "name": "ts-enjoy-hint",
   "version": "1.0.0",
   "description": "Typescript enjoy hint",
-  "main": "index.js",
+  "main": "/dist/cjs/index.js",
   "scripts": {
-    "dev": "tsc -b ./tsconfig.cjs.json",
+    "dev": "webpack --watch",
     "build": "tsc -b ./tsconfig.cjs.json ./tsconfig.esm.json ./tsconfig.types.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -30,6 +30,9 @@
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-n": "^16.0.1",
     "eslint-plugin-promise": "^6.1.1",
-    "typescript": "^5.1.6"
+    "ts-loader": "^9.4.4",
+    "typescript": "^5.1.6",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
   }
 }
