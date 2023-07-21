@@ -27,10 +27,10 @@ function drawHintByShape (drawArguments: TsEnjoyHintDrawFunctionArguments, shape
 }
 
 function drawRectangle ({ context, rect, color }: TsEnjoyHintDrawFunctionArguments): void {
-    const { left, top, right, bottom } = rect;
+    const { left, top, width, height } = rect;
 
     context.fillStyle = color ?? DEFAULT_FILL_COLOR;
-    context.fillRect(left, top, right, bottom);
+    context.fillRect(left, top, width, height);
 }
 
 function drawCircle ({ context, rect, color }: TsEnjoyHintDrawFunctionArguments): void {
