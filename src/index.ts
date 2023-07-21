@@ -1,23 +1,6 @@
 import { canvasDrawer, createFullScreenCanvas } from './utils/canvas.utils';
 import { createNonClickableStroke, getElementFromTarget, resizeNonClickableStrokeToTarget, type TsEnjoyHintNonClickableStokes } from './utils/options.utils';
 
-type TsEnjoyHintTarget = string | Element;
-
-type TsEnjoyHintCallback = (target: Element) => void;
-
-type TsEnjoyHintShape = 'rectangle' | 'circle';
-
-interface TsEnjoyHintTargetOption {
-    target: TsEnjoyHintTarget;
-    shape?: TsEnjoyHintShape;
-    label?: string;
-    nextEvent?: string;
-    onEnter?: TsEnjoyHintCallback;
-    onLeave?: TsEnjoyHintCallback;
-}
-
-type TsEnjoyHintOptions = TsEnjoyHintTarget | TsEnjoyHintTargetOption;
-
 class TypescriptEnjoyHint {
     private current: number = 0;
 
@@ -73,6 +56,7 @@ class TypescriptEnjoyHint {
                 target.onLeave(getElementFromTarget(target.target));
             }
             this.current++;
+            this.render(this.getCurrent());
         }
     }
 
@@ -104,5 +88,22 @@ class TypescriptEnjoyHint {
 function isTsEnjoyHintTargetOption (option: TsEnjoyHintOptions): option is TsEnjoyHintTargetOption {
     return typeof option === 'object' && !(option instanceof HTMLElement) && 'target' in option;
 }
+
+type TsEnjoyHintTarget = string | Element;
+
+type TsEnjoyHintCallback = (target: Element) => void;
+
+type TsEnjoyHintShape = 'rectangle' | 'circle';
+
+interface TsEnjoyHintTargetOption {
+    target: TsEnjoyHintTarget;
+    shape?: TsEnjoyHintShape;
+    label?: string;
+    nextEvent?: string;
+    onEnter?: TsEnjoyHintCallback;
+    onLeave?: TsEnjoyHintCallback;
+}
+
+type TsEnjoyHintOptions = TsEnjoyHintTarget | TsEnjoyHintTargetOption;
 
 export { TypescriptEnjoyHint, type TsEnjoyHintOptions, type TsEnjoyHintShape, type TsEnjoyHintTarget, type TsEnjoyHintTargetOption };
