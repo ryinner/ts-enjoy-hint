@@ -30,11 +30,11 @@ export function createNonClickableStroke (): TsEnjoyHintNonClickableStokes {
 }
 
 export function resizeNonClickableStrokeToTarget (target: TsEnjoyHintTarget, strokes: TsEnjoyHintNonClickableStokes): void {
-    const { x, y, width, height, left } = getTargetRect({ target });
+    const { x, y, width, height } = getTargetRect({ target });
     const { innerHeight, innerWidth } = window;
 
     strokes.left.style.left = '0px';
-    strokes.left.style.width = `${left}px`;
+    strokes.left.style.width = `${x}px`;
     strokes.left.style.height = '100%';
 
     strokes.right.style.right = '0px';

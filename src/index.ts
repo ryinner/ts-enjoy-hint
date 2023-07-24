@@ -1,4 +1,5 @@
 import { canvasDrawer, createFullScreenCanvas } from './utils/canvas.utils';
+import { createLabel, resizeLabel } from './utils/label.utils';
 import { createNonClickableStroke, getElementFromTarget, resizeNonClickableStrokeToTarget, type TsEnjoyHintNonClickableStokes } from './utils/options.utils';
 import { getTargetRect } from './utils/rect.utils';
 
@@ -7,6 +8,7 @@ class TypescriptEnjoyHint {
 
     private canvas!: HTMLCanvasElement;
     private stroke!: TsEnjoyHintNonClickableStokes;
+    private label!: HTMLDivElement;
 
     private hints!: TsEnjoyHintTargetOption[];
 
@@ -38,6 +40,10 @@ class TypescriptEnjoyHint {
             document.body.appendChild(this.stroke.left);
             document.body.appendChild(this.stroke.right);
             document.body.appendChild(this.stroke.top);
+        }
+        if (this.label === undefined) {
+            this.label = createLabel();
+            document.body.appendChild(this.label);
         }
         this.render(this.getCurrent());
         document.body.style.overflow = 'hidden';
@@ -75,6 +81,7 @@ class TypescriptEnjoyHint {
         }
         canvasDrawer(this.canvas, target);
         resizeNonClickableStrokeToTarget(target.target, this.stroke);
+        resizeLabel({ label: this.label, target });
     }
 
     canvasResize (): void {
