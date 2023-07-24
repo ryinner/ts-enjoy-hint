@@ -2,6 +2,7 @@ import { canvasDrawer, createFullScreenCanvas } from './utils/canvas.utils';
 import { createLabel, resizeLabel } from './utils/label.utils';
 import { createNonClickableStroke, getElementFromTarget, resizeNonClickableStrokeToTarget, type TsEnjoyHintNonClickableStokes } from './utils/options.utils';
 import { getTargetRect } from './utils/rect.utils';
+import { throttle } from './utils/throttle.utils';
 
 class TypescriptEnjoyHint {
     private current: number = 0;
@@ -11,6 +12,8 @@ class TypescriptEnjoyHint {
     private label!: HTMLDivElement;
 
     private hints!: TsEnjoyHintTargetOption[];
+
+    private resizeFunc!: ReturnType<typeof throttle>;
 
     apply (options: TsEnjoyHintOptions | TsEnjoyHintOptions[]): void {
         this.close();
@@ -47,11 +50,15 @@ class TypescriptEnjoyHint {
         }
         this.render(this.getCurrent());
         document.body.style.overflow = 'hidden';
-        window.addEventListener('resize', () => { this.canvasResize(); });
+
+        const resizeFunc = throttle(this.resize.bind(this), 1000);
+        resizeFunc.bind(this);
+        this.resizeFunc = resizeFunc;
+        window.addEventListener('resize', <() => void> resizeFunc);
     }
 
     close (): void {
-        window.removeEventListener('resize', () => { this.canvasResize(); });
+        window.removeEventListener('resize', this.resizeFunc);
     }
 
     next (): void {
@@ -84,7 +91,7 @@ class TypescriptEnjoyHint {
         resizeLabel({ label: this.label, target });
     }
 
-    canvasResize (): void {
+    resize (): void {
         const target = this.getCurrent();
         getTargetRect({ target: target.target, force: true });
         this.canvas.width = window.innerWidth;
