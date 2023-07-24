@@ -1,4 +1,5 @@
 import type { TsEnjoyHintTarget } from '../index';
+import { getTargetRect } from './rect.utils';
 
 export function getElementFromTarget (target: TsEnjoyHintTarget): Element {
     if (typeof target === 'string') {
@@ -29,7 +30,7 @@ export function createNonClickableStroke (): TsEnjoyHintNonClickableStokes {
 }
 
 export function resizeNonClickableStrokeToTarget (target: TsEnjoyHintTarget, strokes: TsEnjoyHintNonClickableStokes): void {
-    const { x, y, width, height, left } = getElementFromTarget(target).getBoundingClientRect();
+    const { x, y, width, height, left } = getTargetRect({ target });
     const { innerHeight, innerWidth } = window;
 
     strokes.left.style.left = '0px';

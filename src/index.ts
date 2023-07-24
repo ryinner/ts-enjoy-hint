@@ -1,5 +1,6 @@
 import { canvasDrawer, createFullScreenCanvas } from './utils/canvas.utils';
 import { createNonClickableStroke, getElementFromTarget, resizeNonClickableStrokeToTarget, type TsEnjoyHintNonClickableStokes } from './utils/options.utils';
+import { getTargetRect } from './utils/rect.utils';
 
 class TypescriptEnjoyHint {
     private current: number = 0;
@@ -78,6 +79,7 @@ class TypescriptEnjoyHint {
 
     canvasResize (): void {
         const target = this.getCurrent();
+        getTargetRect({ target: target.target, force: true });
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
         this.render(target);
