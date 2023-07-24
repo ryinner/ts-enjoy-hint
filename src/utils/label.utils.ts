@@ -1,10 +1,15 @@
 import type { TsEnjoyHintTargetOption } from '../index';
 import { getTargetRect } from './rect.utils';
 
+export const DEFAULT_PADDING = '1.5rem';
+
 export function createLabel (): HTMLDivElement {
     const label = document.createElement('div');
     label.style.position = 'absolute';
     label.style.display = 'flex';
+    label.style.boxSizing = 'border-box';
+    label.style.color = '#fff';
+    label.style.fontSize = '1.2rem';
 
     label.classList.add('ts-enjoy-hint-label');
 
@@ -31,10 +36,12 @@ export function resizeLabel ({ target, label }: { label: HTMLDivElement; target:
 
     if (isVr) {
         label.style.maxHeight = `${space}px`;
+        label.style.maxWidth = '100%';
         label.style.left = `${x + width / 2}px`;
         label.style.transform = 'translateX(-50%)';
         label.style.justifyContent = 'center';
     } else {
+        label.style.maxHeight = '100%';
         label.style.maxWidth = `${space}px`;
         label.style.top = `${y + height / 2}px`;
         label.style.transform = 'translateY(-50%)';
@@ -45,21 +52,25 @@ export function resizeLabel ({ target, label }: { label: HTMLDivElement; target:
         case 'bottom':
             label.style.top = `${y + height}px`;
             label.style.alignItems = 'start';
+            label.style.paddingTop = DEFAULT_PADDING;
             break;
 
         case 'top':
             label.style.bottom = `${y}px`;
             label.style.alignItems = 'end';
+            label.style.paddingBottom = DEFAULT_PADDING;
             break;
 
         case 'left':
             label.style.right = `${x}px`;
             label.style.justifyContent = 'end';
+            label.style.paddingRight = DEFAULT_PADDING;
             break;
 
         case 'right':
             label.style.left = `${x + width}px`;
             label.style.justifyContent = 'start';
+            label.style.paddingLeft = DEFAULT_PADDING;
             break;
     }
 }
