@@ -1,7 +1,7 @@
 import type { TsEnjoyHintShape, TsEnjoyHintTargetOption } from '@/index';
 import { getTargetRect } from './rect.utils';
 
-const DEFAULT_FILL_COLOR = '#00000066';
+const DEFAULT_FILL_COLOR = '#00000099';
 
 export function canvasDrawer (canvas: HTMLCanvasElement, target: TsEnjoyHintTargetOption): void {
     const elementRect = getTargetRect({ target: target.target });
