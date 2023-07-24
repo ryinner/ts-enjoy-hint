@@ -32,22 +32,24 @@ export function resizeLabel ({ target, label }: { label: HTMLDivElement; target:
     if (isVr) {
         label.style.maxHeight = `${space}px`;
         label.style.left = `${x + width / 2}px`;
-        label.style.transform = `translateX(-${width / 4}px)`;
+        label.style.transform = 'translateX(-50%)';
+        label.style.justifyContent = 'center';
     } else {
         label.style.maxWidth = `${space}px`;
         label.style.top = `${y + height / 2}px`;
-        label.style.transform = `translateY(-${height / 4}px)`;
+        label.style.transform = 'translateY(-50%)';
+        label.style.alignItems = 'center';
     }
 
     switch (position) {
         case 'bottom':
-            label.style.top = `${y}px`;
-            label.style.alignItems = 'end';
+            label.style.top = `${y + height}px`;
+            label.style.alignItems = 'start';
             break;
 
         case 'top':
-            label.style.bottom = `${y + height}px`;
-            label.style.alignItems = 'start';
+            label.style.bottom = `${y}px`;
+            label.style.alignItems = 'end';
             break;
 
         case 'left':
