@@ -5,7 +5,7 @@ export const DEFAULT_PADDING = '1.5rem';
 
 export function createLabel (): HTMLDivElement {
     const label = document.createElement('div');
-    label.style.position = 'absolute';
+    label.style.position = 'fixed';
     label.style.display = 'flex';
     label.style.boxSizing = 'border-box';
     label.style.color = '#fff';
@@ -68,7 +68,6 @@ export function resizeLabel ({ target, label }: { label: HTMLDivElement; target:
             break;
 
         case 'top':
-            label.style.bottom = `${y}px`;
             label.style.alignItems = 'end';
             label.style.paddingBottom = DEFAULT_PADDING;
             break;

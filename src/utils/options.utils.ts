@@ -37,22 +37,24 @@ export function resizeNonClickableStrokeToTarget (target: TsEnjoyHintTarget, str
     strokes.left.style.width = `${x}px`;
     strokes.left.style.height = '100%';
 
+    const right = innerWidth - (x + width);
     strokes.right.style.right = '0px';
-    strokes.right.style.width = `${innerWidth - (x + width)}px`;
+    strokes.right.style.width = `${right < 0 ? 0 : right}px`;
     strokes.right.style.height = '100%';
 
     strokes.top.style.height = `${y}px`;
     strokes.top.style.width = '100%';
     strokes.top.style.top = '0px';
 
+    const bottom = innerHeight - (y + height);
     strokes.bottom.style.bottom = '0';
-    strokes.bottom.style.height = `${innerHeight - (y + height)}px`;
+    strokes.bottom.style.height = `${bottom < 0 ? 0 : bottom}px`;
     strokes.bottom.style.width = '100%';
 }
 
 function createAbsoluteNonClickableDiv (): HTMLDivElement {
     const div = document.createElement('div');
-    div.style.position = 'absolute';
+    div.style.position = 'fixed';
 
     return div;
 }

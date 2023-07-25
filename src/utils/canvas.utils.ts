@@ -3,6 +3,14 @@ import { getTargetRect } from './rect.utils';
 
 const DEFAULT_FILL_COLOR = '#00000099';
 
+export function paintGrayCanvas ({ canvas }: { canvas: HTMLCanvasElement }): void {
+    cleanCanvas({ canvas });
+    const context = <CanvasRenderingContext2D> canvas.getContext('2d');
+    context.globalCompositeOperation = 'color';
+    context.fillStyle = DEFAULT_FILL_COLOR;
+    context.fillRect(0, 0, canvas.width, canvas.height);
+}
+
 export function cleanCanvas ({ canvas }: { canvas: HTMLCanvasElement }): void {
     const context = <CanvasRenderingContext2D> canvas.getContext('2d');
     context.globalCompositeOperation = 'color';
@@ -54,7 +62,7 @@ function drawCircle ({ context, rect, color }: TsEnjoyHintDrawFunctionArguments)
 
 export function createFullScreenCanvas (): HTMLCanvasElement {
     const canvas = document.createElement('canvas');
-    canvas.style.position = 'absolute';
+    canvas.style.position = 'fixed';
     canvas.style.top = '0';
     canvas.style.left = '0';
     canvas.style.pointerEvents = 'none';

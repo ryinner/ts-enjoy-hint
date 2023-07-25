@@ -1,9 +1,11 @@
 import { createButton } from './utils/button.utils';
-import { canvasDrawer, cleanCanvas, createFullScreenCanvas } from './utils/canvas.utils';
+import { canvasDrawer, cleanCanvas, createFullScreenCanvas, paintGrayCanvas } from './utils/canvas.utils';
 import { createLabel, resizeLabel } from './utils/label.utils';
 import { createNonClickableStroke, getElementFromTarget, resizeNonClickableStrokeToTarget, type TsEnjoyHintNonClickableStokes } from './utils/options.utils';
+import { getTargetRect } from './utils/rect.utils';
 import { getSettings } from './utils/settings.utils';
 import { throttle } from './utils/throttle.utils';
+import { isElementInViewport } from './utils/visability.utils';
 
 class TypescriptEnjoyHint {
     private _current!: number;
@@ -122,21 +124,44 @@ class TypescriptEnjoyHint {
     }
 
     render (target: TsEnjoyHintTargetOption): void {
-        cleanCanvas({ canvas: this.canvas });
+        paintGrayCanvas({ canvas: this.canvas });
         if (typeof target.onEnter === 'function') {
             target.onEnter(getElementFromTarget(target.target));
         }
-        canvasDrawer(this.canvas, target);
-        resizeNonClickableStrokeToTarget(target.target, this.stroke);
-        resizeLabel({ label: this.label, target });
+        if (!isElementInViewport({ target: target.target })) {
+            const element = getElementFromTarget(target.target);
+            let intersectionObserver: IntersectionObserver | undefined = new IntersectionObserver((entries) => {
+                const [entry] = entries;
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        getTargetRect({ target: target.target, force: true });
+                        cleanCanvas({ canvas: this.canvas });
+                        canvasDrawer(this.canvas, target);
+                        resizeNonClickableStrokeToTarget(target.target, this.stroke);
+                        resizeLabel({ label: this.label, target });
+                    }, 100);
+                    if (intersectionObserver !== undefined) {
+                        intersectionObserver.disconnect();
+                    }
+                    intersectionObserver = undefined;
+                }
+            });
+            intersectionObserver.observe(element);
+            element.scrollIntoView({ behavior: getSettings().scrollBehavior, block: 'center', inline: 'nearest' });
+        } else {
+            cleanCanvas({ canvas: this.canvas });
+            canvasDrawer(this.canvas, target);
+            resizeNonClickableStrokeToTarget(target.target, this.stroke);
+            resizeLabel({ label: this.label, target });
+        }
     }
 
     resize (): void {
         const target = this.getCurrent();
+        getTargetRect({ target: target.target, force: true });
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
         this.render(target);
-        resizeNonClickableStrokeToTarget(target.target, this.stroke);
     }
 }
 
