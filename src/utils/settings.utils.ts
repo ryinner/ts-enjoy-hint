@@ -1,6 +1,7 @@
 const tsEnjoyHintSettings: TsEnjoyHintGlobalSettings = {
     nextBtn: 'Next',
-    previousBtn: 'Previous'
+    previousBtn: 'Previous',
+    scrollBehavior: 'smooth'
 };
 
 export function setSettings (settings: TsEnjoyHintGlobalSettings): void {
@@ -14,4 +15,5 @@ export function getSettings (): TsEnjoyHintGlobalSettings {
 export interface TsEnjoyHintGlobalSettings {
     nextBtn: string;
     previousBtn: string;
+    scrollBehavior: ScrollBehavior;
 }

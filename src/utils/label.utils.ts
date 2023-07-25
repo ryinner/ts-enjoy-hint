@@ -26,12 +26,10 @@ export function createLabel (): HTMLDivElement {
 }
 
 export function resizeLabel ({ target, label }: { label: HTMLDivElement; target: TsEnjoyHintTargetOption }): void {
-    if (target.label !== undefined && target.label.trim() !== '') {
-        const labelContent = label.children[0];
-        const labelText = labelContent.querySelector('.ts-enjoy-hint-label__text');
-        if (labelText !== null) {
-            labelText.textContent = target.label;
-        }
+    const labelContent = label.children[0];
+    const labelText = labelContent.querySelector('.ts-enjoy-hint-label__text');
+    if (labelText !== null) {
+        labelText.textContent = target.label ?? '';
     }
 
     const { position, space, isVr } = getLabelPosition({ target });
@@ -46,6 +44,7 @@ export function resizeLabel ({ target, label }: { label: HTMLDivElement; target:
     label.style.alignItems = 'initial';
     label.style.justifyContent = 'initial';
     label.style.transform = 'initial';
+    label.style.padding = 'initial';
 
     if (isVr) {
         label.style.maxHeight = `${space}px`;

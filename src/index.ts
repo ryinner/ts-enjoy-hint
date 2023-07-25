@@ -2,7 +2,6 @@ import { createButton } from './utils/button.utils';
 import { canvasDrawer, cleanCanvas, createFullScreenCanvas } from './utils/canvas.utils';
 import { createLabel, resizeLabel } from './utils/label.utils';
 import { createNonClickableStroke, getElementFromTarget, resizeNonClickableStrokeToTarget, type TsEnjoyHintNonClickableStokes } from './utils/options.utils';
-import { getTargetRect } from './utils/rect.utils';
 import { getSettings } from './utils/settings.utils';
 import { throttle } from './utils/throttle.utils';
 
@@ -24,7 +23,7 @@ class TypescriptEnjoyHint {
     private canvas!: HTMLCanvasElement;
     private stroke!: TsEnjoyHintNonClickableStokes;
     private label!: HTMLDivElement;
-    private readonly buttons: { next?: HTMLButtonElement; close?: HTMLButtonElement; previous?: HTMLButtonElement; } = {
+    private readonly buttons: { next?: HTMLButtonElement; close?: HTMLButtonElement; previous?: HTMLButtonElement } = {
         next: undefined,
         close: undefined,
         previous: undefined
@@ -134,7 +133,6 @@ class TypescriptEnjoyHint {
 
     resize (): void {
         const target = this.getCurrent();
-        getTargetRect({ target: target.target, force: true });
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
         this.render(target);
