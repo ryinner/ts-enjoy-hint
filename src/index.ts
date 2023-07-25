@@ -3,15 +3,28 @@ import { canvasDrawer, cleanCanvas, createFullScreenCanvas } from './utils/canva
 import { createLabel, resizeLabel } from './utils/label.utils';
 import { createNonClickableStroke, getElementFromTarget, resizeNonClickableStrokeToTarget, type TsEnjoyHintNonClickableStokes } from './utils/options.utils';
 import { getTargetRect } from './utils/rect.utils';
+import { getSettings } from './utils/settings.utils';
 import { throttle } from './utils/throttle.utils';
 
 class TypescriptEnjoyHint {
-    private current: number = 0;
+    private _current!: number;
+
+    private get current (): number {
+        return this._current;
+    }
+
+    private set current (value: number) {
+        this._current = value;
+        const nextDisplay = this._current === 0 ? 'none' : 'initial';
+        if (this.buttons.previous !== undefined) {
+            this.buttons.previous.style.display = nextDisplay;
+        }
+    }
 
     private canvas!: HTMLCanvasElement;
     private stroke!: TsEnjoyHintNonClickableStokes;
     private label!: HTMLDivElement;
-    private buttons: { next?: HTMLButtonElement; close?: HTMLButtonElement; previous?: HTMLButtonElement } = {
+    private readonly buttons: { next?: HTMLButtonElement; close?: HTMLButtonElement; previous?: HTMLButtonElement; } = {
         next: undefined,
         close: undefined,
         previous: undefined
@@ -22,8 +35,6 @@ class TypescriptEnjoyHint {
     private resizeFunc!: ReturnType<typeof throttle>;
 
     apply (options: TsEnjoyHintOptions | TsEnjoyHintOptions[]): void {
-        this.current = 0;
-
         const arrayOptions = !Array.isArray(options) ? [options] : options;
 
         const parsedOptions = arrayOptions.map(optionUnknown => {
@@ -37,38 +48,30 @@ class TypescriptEnjoyHint {
     }
 
     open (): void {
+        this.canvas = createFullScreenCanvas();
+        document.body.appendChild(this.canvas);
+        this.stroke = createNonClickableStroke();
+        document.body.appendChild(this.stroke.bottom);
+        document.body.appendChild(this.stroke.left);
+        document.body.appendChild(this.stroke.right);
+        document.body.appendChild(this.stroke.top);
+        this.label = createLabel();
+        const labelContent = this.label.children[0];
+        if (this.buttons.next === undefined) {
+            this.buttons.next = createButton({ text: getSettings().nextBtn });
+
+            const nextFunc = this.next.bind(this);
+            this.buttons.next.onclick = nextFunc;
+            labelContent.appendChild(this.buttons.next);
+        }
+        if (this.buttons.previous === undefined) {
+            this.buttons.previous = createButton({ text: getSettings().previousBtn });
+            const previousFunc = this.previous.bind(this);
+            this.buttons.previous.onclick = previousFunc;
+            labelContent.appendChild(this.buttons.previous);
+        }
+        document.body.appendChild(this.label);
         this.setCurrentFirstIndex();
-        if (this.canvas === undefined) {
-            this.canvas = createFullScreenCanvas();
-            document.body.appendChild(this.canvas);
-        }
-        if (this.stroke === undefined) {
-            this.stroke = createNonClickableStroke();
-            document.body.appendChild(this.stroke.bottom);
-            document.body.appendChild(this.stroke.left);
-            document.body.appendChild(this.stroke.right);
-            document.body.appendChild(this.stroke.top);
-        }
-        for (const buttonType in this.buttons) {
-            if (this.buttons[<keyof TypescriptEnjoyHint['buttons']> buttonType] === undefined) {
-                this.buttons[<keyof TypescriptEnjoyHint['buttons']> buttonType] = createButton({ text: 'Button' });
-            }
-        }
-        if (this.label === undefined) {
-            this.label = createLabel();
-            const labelContent = this.label.children[0];
-            if (this.buttons.next !== undefined) {
-                const nextFunc = this.next.bind(this);
-                this.buttons.next.onclick = nextFunc;
-                labelContent.appendChild(this.buttons.next);
-            }
-            if (this.buttons.previous !== undefined) {
-                const previousFunc = this.previous.bind(this);
-                this.buttons.previous.onclick = previousFunc;
-                labelContent.appendChild(this.buttons.previous);
-            }
-            document.body.appendChild(this.label);
-        }
         this.render(this.getCurrent());
         document.body.style.overflow = 'hidden';
         const resizeFunc = throttle(this.resize.bind(this), 100);
@@ -84,6 +87,7 @@ class TypescriptEnjoyHint {
         document.body.removeChild(this.stroke.left);
         document.body.removeChild(this.stroke.right);
         document.body.removeChild(this.stroke.top);
+        document.body.style.overflow = 'initial';
     }
 
     next (): void {
