@@ -11,6 +11,15 @@ export function createLabel (): HTMLDivElement {
     label.style.color = '#fff';
     label.style.fontSize = '1.2rem';
 
+    const labelContent = document.createElement('div');
+    labelContent.classList.add('ts-enjoy-hint-label__content');
+
+    const labelText = document.createElement('div');
+    labelText.classList.add('ts-enjoy-hint-label__text');
+    labelContent.appendChild(labelText);
+
+    label.appendChild(labelContent);
+
     label.classList.add('ts-enjoy-hint-label');
 
     return label;
@@ -18,7 +27,11 @@ export function createLabel (): HTMLDivElement {
 
 export function resizeLabel ({ target, label }: { label: HTMLDivElement; target: TsEnjoyHintTargetOption }): void {
     if (target.label !== undefined && target.label.trim() !== '') {
-        label.innerHTML = target.label;
+        const labelContent = label.children[0];
+        const labelText = labelContent.querySelector('.ts-enjoy-hint-label__text');
+        if (labelText !== null) {
+            labelText.textContent = target.label;
+        }
     }
 
     const { position, space, isVr } = getLabelPosition({ target });

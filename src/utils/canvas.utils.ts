@@ -3,6 +3,12 @@ import { getTargetRect } from './rect.utils';
 
 const DEFAULT_FILL_COLOR = '#00000099';
 
+export function cleanCanvas ({ canvas }: { canvas: HTMLCanvasElement }): void {
+    const context = <CanvasRenderingContext2D> canvas.getContext('2d');
+    context.globalCompositeOperation = 'color';
+    context.clearRect(0, 0, canvas.width, canvas.height);
+}
+
 export function canvasDrawer (canvas: HTMLCanvasElement, target: TsEnjoyHintTargetOption): void {
     const elementRect = getTargetRect({ target: target.target });
     const canvasRect = canvas.getBoundingClientRect();
