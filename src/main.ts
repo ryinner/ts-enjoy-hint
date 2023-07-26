@@ -6,7 +6,8 @@ enjoyHint.apply([
     { target: '#first-target', label: 'Hi my friend. It\'s TsEnjoyHint!' },
     { target: '#second-target', shape: 'circle' },
     { target: '#third-target', onEnter: () => { console.log('enter'); }, onLeave: () => { console.log('leave'); }, label: 'You can watch event in console.' },
-    { target: '#five-target', label: 'It\'s scroll to target.' }
+    { target: '#five-target', label: 'It\'s scroll to target.' },
+    { target: '#six-target', label: 'Click!!!!', nextEvent: 'click' }
 ]);
 
 enjoyHint.open();

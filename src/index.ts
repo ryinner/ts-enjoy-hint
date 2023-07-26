@@ -16,9 +16,14 @@ class TypescriptEnjoyHint {
 
     private set current (value: number) {
         this._current = value;
-        const nextDisplay = this._current === 0 ? 'none' : 'initial';
+        const previousDisplay = this._current === 0 ? 'none' : 'initial';
         if (this.buttons.previous !== undefined) {
-            this.buttons.previous.style.display = nextDisplay;
+            this.buttons.previous.style.display = previousDisplay;
+        }
+        const target = this.getCurrent();
+        const nextDisplay = target.nextEvent !== undefined ? 'none' : 'initial';
+        if (this.buttons.next !== undefined) {
+            this.buttons.next.style.display = nextDisplay;
         }
     }
 
@@ -128,18 +133,32 @@ class TypescriptEnjoyHint {
         if (typeof target.onEnter === 'function') {
             target.onEnter(getElementFromTarget(target.target));
         }
+        const render = ({ force }: { force: boolean }): void => {
+            getTargetRect({ target: target.target, force });
+            cleanCanvas({ canvas: this.canvas });
+            canvasDrawer(this.canvas, target);
+            resizeNonClickableStrokeToTarget(target.target, this.stroke);
+            resizeLabel({ label: this.label, target });
+
+            if (target.nextEvent !== undefined) {
+                const element = getElementFromTarget(target.target);
+                const nextFunc = this.next.bind(this);
+                const eventHandler = (): void => {
+                    nextFunc();
+                    element.removeEventListener(<string> target.nextEvent, eventHandler);
+                };
+                element.addEventListener(target.nextEvent, eventHandler);
+            }
+        };
+
         if (!isElementInViewport({ target: target.target })) {
             const element = getElementFromTarget(target.target);
             let intersectionObserver: IntersectionObserver | undefined = new IntersectionObserver((entries) => {
                 const [entry] = entries;
                 if (entry.isIntersecting) {
                     setTimeout(() => {
-                        getTargetRect({ target: target.target, force: true });
-                        cleanCanvas({ canvas: this.canvas });
-                        canvasDrawer(this.canvas, target);
-                        resizeNonClickableStrokeToTarget(target.target, this.stroke);
-                        resizeLabel({ label: this.label, target });
-                    }, 100);
+                        render({ force: true });
+                    }, 300);
                     if (intersectionObserver !== undefined) {
                         intersectionObserver.disconnect();
                     }
@@ -149,10 +168,7 @@ class TypescriptEnjoyHint {
             intersectionObserver.observe(element);
             element.scrollIntoView({ behavior: getSettings().scrollBehavior, block: 'center', inline: 'nearest' });
         } else {
-            cleanCanvas({ canvas: this.canvas });
-            canvasDrawer(this.canvas, target);
-            resizeNonClickableStrokeToTarget(target.target, this.stroke);
-            resizeLabel({ label: this.label, target });
+            render({ force: false });
         }
     }
 
