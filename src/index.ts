@@ -64,17 +64,23 @@ class TypescriptEnjoyHint {
         this.label = createLabel();
         const labelContent = this.label.children[0];
         if (this.buttons.next === undefined) {
-            this.buttons.next = createButton({ text: getSettings().nextBtn });
+            this.buttons.next = createButton({ text: getSettings().nextBtn, class: getSettings().nextBtnClass });
 
             const nextFunc = this.next.bind(this);
             this.buttons.next.onclick = nextFunc;
             labelContent.appendChild(this.buttons.next);
         }
         if (this.buttons.previous === undefined) {
-            this.buttons.previous = createButton({ text: getSettings().previousBtn });
+            this.buttons.previous = createButton({ text: getSettings().previousBtn, class: getSettings().previousBtnClass });
             const previousFunc = this.previous.bind(this);
             this.buttons.previous.onclick = previousFunc;
             labelContent.appendChild(this.buttons.previous);
+        }
+        if (this.buttons.close === undefined) {
+            this.buttons.close = createButton({ text: getSettings().closeBtn, class: getSettings().closeBtnClass });
+            const closeFunc = this.close.bind(this);
+            this.buttons.close.onclick = closeFunc;
+            document.body.appendChild(this.buttons.close);
         }
         document.body.appendChild(this.label);
         this.setCurrentFirstIndex();
@@ -93,6 +99,9 @@ class TypescriptEnjoyHint {
         document.body.removeChild(this.stroke.left);
         document.body.removeChild(this.stroke.right);
         document.body.removeChild(this.stroke.top);
+        if (this.buttons.close !== undefined) {
+            document.body.removeChild(this.buttons.close);
+        }
         document.body.style.overflow = 'initial';
     }
 
@@ -139,6 +148,7 @@ class TypescriptEnjoyHint {
             canvasDrawer(this.canvas, target);
             resizeNonClickableStrokeToTarget(target.target, this.stroke);
             resizeLabel({ label: this.label, target });
+            this.label.style.opacity = 'initial';
 
             if (target.nextEvent !== undefined) {
                 const element = getElementFromTarget(target.target);
@@ -152,6 +162,7 @@ class TypescriptEnjoyHint {
         };
 
         if (!isElementInViewport({ target: target.target })) {
+            this.label.style.opacity = '0';
             const element = getElementFromTarget(target.target);
             let intersectionObserver: IntersectionObserver | undefined = new IntersectionObserver((entries) => {
                 const [entry] = entries;

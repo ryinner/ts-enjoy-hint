@@ -1,6 +1,10 @@
 const tsEnjoyHintSettings: TsEnjoyHintGlobalSettings = {
     nextBtn: 'Next',
+    nextBtnClass: 'ts-enjoy-hint-button--next',
     previousBtn: 'Previous',
+    previousBtnClass: 'ts-enjoy-hint-button--previous',
+    closeBtn: 'X',
+    closeBtnClass: 'ts-enjoy-hint-button--close',
     scrollBehavior: 'smooth'
 };
 
@@ -14,6 +18,10 @@ export function getSettings (): TsEnjoyHintGlobalSettings {
 
 export interface TsEnjoyHintGlobalSettings {
     nextBtn: string;
+    nextBtnClass: string;
     previousBtn: string;
+    previousBtnClass: string;
+    closeBtn: string;
+    closeBtnClass: string;
     scrollBehavior: ScrollBehavior;
 }
