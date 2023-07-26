@@ -39,6 +39,7 @@ tsEnjoyHintInstance.apply([{ target: '#target' }, { target: '#second-target' }])
 ## Hint item setting
 
 | setting   |   description                   |        value        |
+| --------- | ------------------------------- | ------------------- |
 | target    | target for hint                 | Element \| selector |
 | shape     | selection shape                 | circle \| rectangle |
 | onEnter   | before enter hint               | (element) => void   |
