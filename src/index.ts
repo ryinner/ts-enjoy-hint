@@ -3,7 +3,7 @@ import { canvasDrawer, cleanCanvas, createFullScreenCanvas, paintGrayCanvas } fr
 import { createLabel, resizeLabel } from './utils/label.utils';
 import { createNonClickableStroke, getElementFromTarget, resizeNonClickableStrokeToTarget, type TsEnjoyHintNonClickableStokes } from './utils/options.utils';
 import { getTargetRect } from './utils/rect.utils';
-import { getSettings } from './utils/settings.utils';
+import { getSettings, setSettings } from './utils/settings.utils';
 import { throttle } from './utils/throttle.utils';
 import { isElementInViewport } from './utils/visability.utils';
 
@@ -40,7 +40,7 @@ class TypescriptEnjoyHint {
 
     private resizeFunc!: ReturnType<typeof throttle>;
 
-    apply (options: TsEnjoyHintOptions | TsEnjoyHintOptions[]): void {
+    public apply (options: TsEnjoyHintOptions | TsEnjoyHintOptions[]): void {
         const arrayOptions = !Array.isArray(options) ? [options] : options;
 
         const parsedOptions = arrayOptions.map(optionUnknown => {
@@ -53,7 +53,7 @@ class TypescriptEnjoyHint {
         this.hints = parsedOptions;
     }
 
-    open (): void {
+    public open (): void {
         this.canvas = createFullScreenCanvas();
         document.body.appendChild(this.canvas);
         this.stroke = createNonClickableStroke();
@@ -91,7 +91,7 @@ class TypescriptEnjoyHint {
         window.addEventListener('resize', this.resizeFunc);
     }
 
-    close (): void {
+    public close (): void {
         window.removeEventListener('resize', this.resizeFunc);
         document.body.removeChild(this.canvas);
         document.body.removeChild(this.label);
@@ -105,7 +105,7 @@ class TypescriptEnjoyHint {
         document.body.style.overflow = 'initial';
     }
 
-    next (): void {
+    private next (): void {
         if (this.current === this.hints.length - 1) {
             this.close();
         } else {
@@ -118,7 +118,7 @@ class TypescriptEnjoyHint {
         }
     }
 
-    previous (): void {
+    private previous (): void {
         if (this.current !== 0) {
             const target = this.getCurrent();
             if (typeof target.onLeave === 'function') {
@@ -129,15 +129,15 @@ class TypescriptEnjoyHint {
         }
     }
 
-    setCurrentFirstIndex (): void {
+    private setCurrentFirstIndex (): void {
         this.current = 0;
     }
 
-    getCurrent (): TsEnjoyHintTargetOption {
+    private getCurrent (): TsEnjoyHintTargetOption {
         return this.hints[this.current];
     }
 
-    render (target: TsEnjoyHintTargetOption): void {
+    private render (target: TsEnjoyHintTargetOption): void {
         paintGrayCanvas({ canvas: this.canvas });
         if (typeof target.onEnter === 'function') {
             target.onEnter(getElementFromTarget(target.target));
@@ -183,7 +183,7 @@ class TypescriptEnjoyHint {
         }
     }
 
-    resize (): void {
+    private resize (): void {
         const target = this.getCurrent();
         getTargetRect({ target: target.target, force: true });
         this.canvas.width = window.innerWidth;
@@ -213,4 +213,4 @@ interface TsEnjoyHintTargetOption {
 
 type TsEnjoyHintOptions = TsEnjoyHintTarget | TsEnjoyHintTargetOption;
 
-export { TypescriptEnjoyHint, type TsEnjoyHintOptions, type TsEnjoyHintShape, type TsEnjoyHintTarget, type TsEnjoyHintTargetOption };
+export { setSettings as TsEnjoyHintSetSettings, TypescriptEnjoyHint, type TsEnjoyHintOptions, type TsEnjoyHintShape, type TsEnjoyHintTarget, type TsEnjoyHintTargetOption };
