@@ -86,7 +86,6 @@ export function resizeLabel ({ target, label }: { label: HTMLDivElement; target:
     }
 }
 
-// priority - bottom, top, right, left
 function getLabelPosition ({ target }: { target: TsEnjoyHintTargetOption }): { position: 'right' | 'left' | 'top' | 'bottom'; space: number; isVr: boolean } {
     const { x, y, width, height } = getTargetRect({ target: target.target });
     const { innerHeight, innerWidth } = window;

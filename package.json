@@ -3,10 +3,29 @@
   "version": "1.0.0",
   "description": "Typescript enjoy hint",
   "main": "/dist/cjs/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "node": {
+        "import": {
+          "default": "./dist/esm/index.js"
+        },
+        "require": {
+          "default": "./dist/cjs/index.js"
+        }
+      },
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "default": "./dist/cjs/index.js"
+    }
+  },
+  "files": [
+    "dist/**/*"
+  ],
   "scripts": {
-    "dev": "webpack --watch",
-    "build": "tsc -b ./tsconfig.cjs.json ./tsconfig.esm.json ./tsconfig.types.json",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "webpack --watch --mode development --config webpack/webpack.dev.js",
+    "build": "webpack --config webpack/webpack.commonjs.js --mode production && webpack --config webpack/webpack.es.js --mode production && tsc -b tsconfig.types.json"
   },
   "repository": {
     "type": "git",
@@ -40,6 +59,10 @@
     "ts-loader": "^9.4.4",
     "typescript": "^5.1.6",
     "webpack": "^5.88.2",
-    "webpack-cli": "^5.1.4"
+    "webpack-cli": "^5.1.4",
+    "webpack-merge": "^5.9.0"
+  },
+  "dependencies": {
+    "tsconfig-paths-webpack-plugin": "^4.1.0"
   }
 }
