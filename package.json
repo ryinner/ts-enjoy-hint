@@ -28,7 +28,8 @@
   ],
   "scripts": {
     "dev": "webpack --watch --mode development --config webpack/webpack.dev.js",
-    "build": "webpack --config webpack/webpack.commonjs.js --mode production && webpack --config webpack/webpack.es.js --mode production && tsc -b tsconfig.types.json"
+    "build": "webpack --config webpack/webpack.commonjs.js --mode production && webpack --config webpack/webpack.es.js --mode production && tsc -b tsconfig.types.json",
+    "build-deploy": "webpack --mode production --config webpack/webpack.dev.js"
   },
   "repository": {
     "type": "git",
