@@ -1,5 +1,6 @@
 import type { TsEnjoyHintShape, TsEnjoyHintTargetOption } from '@/index';
 import { getTargetRect } from './rect.utils';
+import { getSettings } from './settings.utils';
 
 const DEFAULT_FILL_COLOR = '#00000099';
 
@@ -66,6 +67,7 @@ export function createFullScreenCanvas (): HTMLCanvasElement {
     canvas.style.top = '0';
     canvas.style.left = '0';
     canvas.style.pointerEvents = 'none';
+    canvas.style.zIndex = `${getSettings().zIndex}`;
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 

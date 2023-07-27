@@ -5,6 +5,7 @@ const tsEnjoyHintSettings: TsEnjoyHintGlobalSettings = {
     previousBtnClass: 'ts-enjoy-hint-button--previous',
     closeBtn: 'X',
     closeBtnClass: 'ts-enjoy-hint-button--close',
+    zIndex: 10,
     scrollBehavior: 'smooth'
 };
 
@@ -23,5 +24,6 @@ export interface TsEnjoyHintGlobalSettings {
     previousBtnClass: string;
     closeBtn: string;
     closeBtnClass: string;
+    zIndex: number;
     scrollBehavior: ScrollBehavior;
 }

@@ -1,5 +1,6 @@
 import type { TsEnjoyHintTarget } from '../index';
 import { getTargetRect } from './rect.utils';
+import { getSettings } from './settings.utils';
 
 export function getElementFromTarget (target: TsEnjoyHintTarget): Element {
     if (typeof target === 'string') {
@@ -13,16 +14,16 @@ export function getElementFromTarget (target: TsEnjoyHintTarget): Element {
 }
 
 export function createNonClickableStroke (): TsEnjoyHintNonClickableStokes {
-    const leftStroke = createAbsoluteNonClickableDiv();
+    const leftStroke = createFixedNonClickableDiv();
     leftStroke.style.top = '0';
     leftStroke.classList.add('ts-enjoy-hint-left');
-    const rightStroke = createAbsoluteNonClickableDiv();
+    const rightStroke = createFixedNonClickableDiv();
     rightStroke.style.top = '0';
     rightStroke.classList.add('ts-enjoy-hint-right');
-    const topStroke = createAbsoluteNonClickableDiv();
+    const topStroke = createFixedNonClickableDiv();
     topStroke.style.left = '0';
     topStroke.classList.add('ts-enjoy-hint-top');
-    const bottomStroke = createAbsoluteNonClickableDiv();
+    const bottomStroke = createFixedNonClickableDiv();
     bottomStroke.style.left = '0';
     bottomStroke.classList.add('ts-enjoy-hint-bottom');
 
@@ -52,9 +53,10 @@ export function resizeNonClickableStrokeToTarget (target: TsEnjoyHintTarget, str
     strokes.bottom.style.width = '100%';
 }
 
-function createAbsoluteNonClickableDiv (): HTMLDivElement {
+function createFixedNonClickableDiv (): HTMLDivElement {
     const div = document.createElement('div');
     div.style.position = 'fixed';
+    div.style.zIndex = `${getSettings().zIndex}`;
 
     return div;
 }

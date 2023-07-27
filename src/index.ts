@@ -7,7 +7,7 @@ import { getSettings, setSettings } from './utils/settings.utils';
 import { throttle } from './utils/throttle.utils';
 import { isElementInViewport } from './utils/visability.utils';
 
-class TypescriptEnjoyHint {
+class TsEnjoyHint {
     private _current!: number;
 
     private get current (): number {
@@ -26,6 +26,8 @@ class TypescriptEnjoyHint {
             this.buttons.next.style.display = nextDisplay;
         }
     }
+
+    private isOpen: boolean = false;
 
     private canvas!: HTMLCanvasElement;
     private stroke!: TsEnjoyHintNonClickableStokes;
@@ -54,6 +56,10 @@ class TypescriptEnjoyHint {
     }
 
     public open (): void {
+        if (this.isOpen) {
+            return;
+        }
+        this.isOpen = true;
         this.canvas = createFullScreenCanvas();
         document.body.appendChild(this.canvas);
         this.stroke = createNonClickableStroke();
@@ -65,23 +71,22 @@ class TypescriptEnjoyHint {
         const labelContent = this.label.children[0];
         if (this.buttons.next === undefined) {
             this.buttons.next = createButton({ text: getSettings().nextBtn, class: getSettings().nextBtnClass });
-
             const nextFunc = this.next.bind(this);
             this.buttons.next.onclick = nextFunc;
-            labelContent.appendChild(this.buttons.next);
         }
+        labelContent.appendChild(this.buttons.next);
         if (this.buttons.previous === undefined) {
             this.buttons.previous = createButton({ text: getSettings().previousBtn, class: getSettings().previousBtnClass });
             const previousFunc = this.previous.bind(this);
             this.buttons.previous.onclick = previousFunc;
-            labelContent.appendChild(this.buttons.previous);
         }
+        labelContent.appendChild(this.buttons.previous);
         if (this.buttons.close === undefined) {
             this.buttons.close = createButton({ text: getSettings().closeBtn, class: getSettings().closeBtnClass });
             const closeFunc = this.close.bind(this);
             this.buttons.close.onclick = closeFunc;
-            document.body.appendChild(this.buttons.close);
         }
+        document.body.appendChild(this.buttons.close);
         document.body.appendChild(this.label);
         this.setCurrentFirstIndex();
         this.render(this.getCurrent());
@@ -213,4 +218,4 @@ interface TsEnjoyHintTargetOption {
 
 type TsEnjoyHintOptions = TsEnjoyHintTarget | TsEnjoyHintTargetOption;
 
-export { setSettings as TsEnjoyHintSetSettings, TypescriptEnjoyHint, type TsEnjoyHintOptions, type TsEnjoyHintShape, type TsEnjoyHintTarget, type TsEnjoyHintTargetOption };
+export { TsEnjoyHint, setSettings as TsEnjoyHintSetSettings, type TsEnjoyHintOptions, type TsEnjoyHintShape, type TsEnjoyHintTarget, type TsEnjoyHintTargetOption };

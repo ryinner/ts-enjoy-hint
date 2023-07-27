@@ -21,7 +21,7 @@ setSettings({
 ## Create
 
 ```typescript
-const tsEnjoyHintInstance = new TypescriptEnjoyHint();
+const tsEnjoyHintInstance = new TsEnjoyHint();
 ```
 
 ## Hint list

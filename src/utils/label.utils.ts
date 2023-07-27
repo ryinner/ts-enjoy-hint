@@ -1,5 +1,6 @@
 import type { TsEnjoyHintTargetOption } from '../index';
 import { getTargetRect } from './rect.utils';
+import { getSettings } from './settings.utils';
 
 export const DEFAULT_PADDING = '1.5rem';
 
@@ -10,6 +11,7 @@ export function createLabel (): HTMLDivElement {
     label.style.boxSizing = 'border-box';
     label.style.color = '#fff';
     label.style.fontSize = '1.2rem';
+    label.style.zIndex = `${getSettings().zIndex}`;
 
     const labelContent = document.createElement('div');
     labelContent.classList.add('ts-enjoy-hint-label__content');

@@ -1,6 +1,6 @@
-import { TypescriptEnjoyHint } from './index';
+import { TsEnjoyHint } from './index';
 
-const enjoyHint = new TypescriptEnjoyHint();
+const enjoyHint = new TsEnjoyHint();
 
 enjoyHint.apply([
     { target: '#first-target', label: 'Hi my friend. It\'s TsEnjoyHint!' },
