@@ -50,9 +50,9 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v2
       - name: Build node
-      uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          registry-url: https://registry.npmjs.org/
-      - run: npm ci
-      - run: npm run build-deploy
+        uses: actions/setup-node@v3
+          with:
+            node-version: 16
+            registry-url: https://registry.npmjs.org/
+        - run: npm ci
+        - run: npm run build-deploy
