@@ -37,13 +37,13 @@ jobs:
           destination: ./_site
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
-      uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: 16
           registry-url: https://registry.npmjs.org/
       - run: npm ci
       - run: npm run build-deploy
-
+    
   # Deployment job
   deploy:
     environment:
