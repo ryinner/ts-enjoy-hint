@@ -6,7 +6,6 @@
   "types": "./dist/types/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/types/index.d.ts",
       "node": {
         "import": {
           "default": "./dist/esm/index.js"

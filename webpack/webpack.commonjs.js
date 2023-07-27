@@ -16,6 +16,9 @@ module.exports = merge(common, {
         clean: true,
         filename: '[name].js',
         path: buildDir,
+        library: {
+            type: 'commonjs2',
+        },
     },
     resolve: {
         plugins: [new TsconfigPathsPlugin({
