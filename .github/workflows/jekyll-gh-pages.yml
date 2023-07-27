@@ -26,8 +26,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - run: npm ci
-      - run: npm run build-deploy
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Pages
@@ -55,3 +53,5 @@ jobs:
         with:
           node-version: 16
           registry-url: https://registry.npmjs.org/
+      - run: npm ci
+      - run: npm run build-deploy
