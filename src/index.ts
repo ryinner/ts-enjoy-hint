@@ -97,6 +97,7 @@ class TsEnjoyHint {
     }
 
     public close (): void {
+        this.isOpen = true;
         window.removeEventListener('resize', this.resizeFunc);
         document.body.removeChild(this.canvas);
         document.body.removeChild(this.label);
