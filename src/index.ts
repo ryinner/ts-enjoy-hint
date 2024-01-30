@@ -183,6 +183,11 @@ class TsEnjoyHint {
                 }
             });
             intersectionObserver.observe(element);
+            const scrollendHandler = (): void => {
+                render({ force: true });
+                document.removeEventListener('scrollend', scrollendHandler);
+            };
+            document.addEventListener('scrollend', scrollendHandler);
             element.scrollIntoView({ behavior: getSettings().scrollBehavior, block: 'center', inline: 'nearest' });
         } else {
             render({ force: false });
