@@ -170,25 +170,14 @@ class TsEnjoyHint {
         if (!isElementInViewport({ target: target.target })) {
             this.label.style.opacity = '0';
             const element = getElementFromTarget(target.target);
-            let intersectionObserver: IntersectionObserver | undefined = new IntersectionObserver((entries) => {
-                const [entry] = entries;
-                if (entry.isIntersecting) {
-                    setTimeout(() => {
-                        render({ force: true });
-                    }, 300);
-                    if (intersectionObserver !== undefined) {
-                        intersectionObserver.disconnect();
-                    }
-                    intersectionObserver = undefined;
-                }
-            });
-            intersectionObserver.observe(element);
             const scrollendHandler = (): void => {
                 render({ force: true });
                 document.removeEventListener('scrollend', scrollendHandler);
             };
-            document.addEventListener('scrollend', scrollendHandler);
-            element.scrollIntoView({ behavior: getSettings().scrollBehavior, block: 'center', inline: 'nearest' });
+            setTimeout(() => {
+                element.scrollIntoView({ behavior: getSettings().scrollBehavior, block: 'center', inline: 'nearest' });
+                document.addEventListener('scrollend', scrollendHandler);
+            }, 300);
         } else {
             render({ force: false });
         }
